@@ -1,7 +1,5 @@
-loop do
-puts "What is your float?"
-float = gets.chomp
+num = 12
 
-puts "translating to float...#{float.to_f}"
-puts "translating back to string... is #{float} equal to #{float.to_f.round(2).to_s}?"
+if num % 4 == 0 || (num < 7 && num < 10)
+  puts 'Goodbye'
 end
