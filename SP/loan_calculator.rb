@@ -5,7 +5,7 @@ loop do
     n.to_s.sub(/\.?0+$/, "")
   end
 
-  def output(message, type = "f")
+  def get_and_verify_input(message, type = "f")
     num = nil
     loop do
       puts "=> " + message
@@ -33,9 +33,9 @@ loop do
        for 2.5% just type 2.5.
   APR
 
-  p = output("How much is the loan for?", "f")
-  j = output(apr, "f") / 100 / 12
-  n = output("How long is the loan duration in years?", "i") * 12
+  p = get_and_verify_input("How much is the loan for?", "f")
+  j = get_and_verify_input(apr, "f") / 100 / 12
+  n = get_and_verify_input("How long is the loan duration in years?", "i") * 12
   m = (p * (j / (1 - (1 + j)**-n)))
   m = "$" + m.round(2).to_s
 
