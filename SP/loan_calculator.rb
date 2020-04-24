@@ -1,5 +1,4 @@
 puts "------------Welcome to Mortgage Calculator------------"
-loop do
 
   def get_and_verify_input(message, type = "f")
     num = nil
@@ -29,6 +28,8 @@ loop do
        for 2.5% just type 2.5.
   APR
 
+loop do
+
   p = get_and_verify_input("How much is the loan for?", "f")
   j = get_and_verify_input(apr, "f") / 100 / 12
   n = get_and_verify_input("How long is the loan duration in years?", "i") * 12
@@ -37,7 +38,7 @@ loop do
 
   puts "Your loan duration in months is #{n.to_i}."
   puts "Your monthly payment is #{m}."
-  puts "=> Would you like to make another calculation?"
+  puts "=> Would you like to make another calculation? Anything other than no will restart the calculator."
   answer = gets.chomp.downcase
   if answer != "no"
     next
