@@ -1,9 +1,5 @@
 puts "------------Welcome to Mortgage Calculator------------"
 loop do
-  def strip(n)
-    # This method strips trailing zeros
-    n.to_s.sub(/\.?0+$/, "")
-  end
 
   def get_and_verify_input(message, type = "f")
     num = nil
@@ -13,7 +9,7 @@ loop do
       if num.empty?
         puts "You must type something!"
         next
-      elsif type == "f" && strip(num) == num.to_f.to_s || num == num.to_i.to_s
+      elsif type == "f" && num == num.to_f.to_s || num == num.to_i.to_s
         num = num.to_f
         break
       elsif type == "i" && num == num.to_i.to_s
