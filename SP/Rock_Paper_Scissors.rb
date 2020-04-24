@@ -1,3 +1,4 @@
+puts "------------Welcome to Calculator-------------"
 VALID_CHOICES = %W[paper scissors rock spock lizard]
 user = 0
 computer = 0
@@ -15,19 +16,19 @@ def play_again
 end
 
 def win?(player, player2)
-	(player2 == "rock" && player == "paper" || player == "spock") ||
-			(player2 == "scissors" && player == "rock" || player == "spock") ||
-			(player2 == "paper" && player == "scissors" || player == "lizard") ||
-			(player2 == "spock" && player == "lizard" || player == "paper") ||
-			(player2 == "lizard" && player == "rock" || player == "scissors")
+	(player2 == "rock" && (player == "paper" || player == "spock")) ||
+			(player2 == "scissors" && (player == "rock" || player == "spock")) ||
+			(player2 == "paper" && (player == "scissors" || player == "lizard")) ||
+			(player2 == "spock" && (player == "lizard" || player == "paper")) ||
+			(player2 == "lizard" && (player == "rock" || player == "scissors"))
 end
 
 def output(computer_choice, user_choice)
 	if win?(user_choice, computer_choice)
-		puts "You won because #{user_choice} beats #{computer_choice}."
+		puts "You won because #{user_choice} beats my choice which was #{computer_choice}."
 		"user"
 	elsif win?(computer_choice, user_choice)
-		puts "You lost because #{computer_choice} beats #{user_choice}."
+		puts "You lost because my choice of #{computer_choice} beats #{user_choice}."
 		"computer"
 	else
 		puts "It is a tie because I said #{computer_choice} and you said #{user_choice}!"

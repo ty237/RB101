@@ -1,5 +1,3 @@
-num = 12
+advice = "Few things in life are as important as house training your pet dinosaur."
+puts advice.split.include?("Dino")
 
-if num % 4 == 0 || (num < 7 && num < 10)
-  puts 'Goodbye'
-end
