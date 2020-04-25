@@ -35,21 +35,20 @@ loop do
   end
 
   output = case operation
-
-             when "+"
-               message = (MESSAGES["add"])
-               num1.to_f + num2.to_f
-             when "-"
-               message = (MESSAGES["subtract"])
-               num1.to_f - num2.to_f
-             when "*"
-               message = (MESSAGES["multiply"])
-               num1.to_f * num2.to_f
-             when "/"
-               message = (MESSAGES["divide"])
-               num1.to_f / num2.to_f
-             else
-               puts (MESSAGES["error_message"])
+           when "+"
+             message = (MESSAGES["add"])
+             num1.to_f + num2.to_f
+           when "-"
+             message = (MESSAGES["subtract"])
+             num1.to_f - num2.to_f
+           when '*'
+             message = (MESSAGES["multiply"])
+             num1.to_f * num2.to_f
+           when "/"
+             message = (MESSAGES["divide"])
+             num1.to_f / num2.to_f
+           else
+             puts (MESSAGES["error_message"])
   end
 
   puts operation
