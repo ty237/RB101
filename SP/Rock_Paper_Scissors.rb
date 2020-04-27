@@ -72,7 +72,7 @@ def total_winner?(user)
   if user >= 5
     puts "Congratulations you are the grand winner!"
   else
-    puts "You lost the whole match loser, better luck next time!"
+    puts "You lost the whole match, better luck next time!"
   end
 end
 
