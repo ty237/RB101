@@ -1,11 +1,27 @@
-puts "------------Welcome to Calculator-------------"
+puts "------------Welcome to Rock Paper Scissors-------------"
 VALID_CHOICES = %w[paper scissors rock spock lizard]
 user = 0
 computer = 0
 
+ENEMIES = {
+  "paper" => %w[lizard scissors],
+  "scissors" => %w[rock spock],
+  "rock" => %w[spock paper],
+  "spock" => %w[lizard paper],
+  "lizard" => %w[rock spock]
+}
+
 def print_and_return_name
-  puts "What is your name?"
-  name = gets.chomp
+  name = nil
+  loop do
+    puts "What is your name?"
+    name = gets.chomp
+    if name.strip.empty?
+      puts "That is not a name!"
+      next
+    end
+    break
+  end
   puts "Welcome #{name}!"
   name
 end
@@ -37,14 +53,10 @@ def play_again?
 end
 
 def win?(player, player2)
-  (player2 == "rock" && (player == "paper" || player == "spock")) ||
-    (player2 == "scissors" && (player == "rock" || player == "spock")) ||
-    (player2 == "paper" && (player == "scissors" || player == "lizard")) ||
-    (player2 == "spock" && (player == "lizard" || player == "paper")) ||
-    (player2 == "lizard" && (player == "rock" || player == "scissors"))
+  ENEMIES[player].include?(player2)
 end
 
-def win_message(computer_choice, user_choice)
+def determine_and_print_winner(computer_choice, user_choice)
   if win?(user_choice, computer_choice)
     puts "You won because #{user_choice} beats my choice which was #{computer_choice}."
     "user"
@@ -65,10 +77,10 @@ def return_and_print_winner
     break if VALID_CHOICES.include?(user_choice)
     puts "That was not valid input!"
   end
-  win_message(computer_choice, user_choice)
+  determine_and_print_winner(computer_choice, user_choice)
 end
 
-def total_winner?(user)
+def total_winner(user)
   if user >= 5
     puts "Congratulations you are the grand winner!"
   else
@@ -76,7 +88,7 @@ def total_winner?(user)
   end
 end
 
-def move_on?
+def move_on
   loop do
     puts "Enter any character to move on."
     gets
@@ -87,6 +99,10 @@ end
 
 def game_loop(user, computer)
   name = print_and_return_name
+  puts "We are going to play first to five points!"
+  puts "Press any character to move on."
+  gets
+  system('clear')
   loop do
     winner = return_and_print_winner
     if winner == "user"
@@ -96,9 +112,9 @@ def game_loop(user, computer)
     end
     puts "The current standings are: #{name} with #{user} points and computer with #{computer} points!"
     break if user == 5 || computer == 5
-    move_on?
+    move_on
   end
-  total_winner?(user)
+  total_winner(user)
 end
 
 loop do
