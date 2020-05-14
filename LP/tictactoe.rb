@@ -17,6 +17,21 @@ def x_or_o
   type.upcase
 end
 
+def who_goes_first
+  answer = nil
+  loop do
+    prompt "Would you like to go first?"
+    answer = gets.chomp.downcase
+    break if %w(y n yes no).include?(answer)
+    puts "Invalid input! Please put: y, n, yes, no"
+  end
+  if %(y, yes).include?(answer)
+    "User"
+  else
+    "Computer"
+  end
+end
+
 def alternate_player(current_player)
   if current_player == 'Computer'
     'User'
@@ -41,13 +56,15 @@ def find_computer_marker
   end
 end
 
+system('clear')
 USER_MARKER = x_or_o
 COMPUTER_MARKER = find_computer_marker
 
 def offensive_move(board)
   WINNING_LINES.each do |line|
-    if board.values_at(line[0], line[1], line[2]).count(COMPUTER_MARKER) == 2
-      return (line.select { |num| board[num] == ' ' }).join.to_i
+    if board.values_at(*line).count(COMPUTER_MARKER) == 2
+      square = (line.select { |num| board[num] == ' ' }).join.to_i
+      return square unless square == 0
     end
   end
   nil
@@ -55,7 +72,7 @@ end
 
 def defensive_move(board)
   WINNING_LINES.each do |line|
-    if board.values_at(line[0], line[1], line[2]).count(USER_MARKER) == 2
+    if board.values_at(*line).count(USER_MARKER) == 2
       square = (line.select { |num| board[num] == ' ' }).join.to_i
       return square unless square == 0
     end
@@ -132,14 +149,15 @@ def display_results(board)
   else
     puts "It was a tie!"
   end
+  detect_winner(board)
 end
 
 def detect_winner(board)
   WINNING_LINES.each do |line|
     if board.values_at(*line).count(USER_MARKER) == 3
-      return "You "
+      return "User"
     elsif board.values_at(*line).count(COMPUTER_MARKER) == 3
-      return "Computer "
+      return "Computer"
     end
   end
   nil
@@ -154,19 +172,21 @@ def place_piece!(board, current_player)
 end
 
 def main_game_loop
+  current_player = who_goes_first
   board = initialize_board
   display_board(board)
-  current_player = 'Computer'
 
   loop do
-    current_player = alternate_player(current_player)
     place_piece!(board, current_player)
-    puts board
+    current_player = alternate_player(current_player)
     display_board(board)
     break if someone_won?(board) || board_full?(board)
   end
 
-  display_results(board)
+  winner = display_results(board)
+  puts "Press any key to continue"
+  gets
+  winner
 end
 
 def play_again?
@@ -184,8 +204,38 @@ def play_again?
   end
 end
 
+# beginning of program
+system('clear')
+puts "What is you name?"
+name = gets.chomp
+
 loop do
-  main_game_loop
+  system('clear')
+  puts "Let's play five games of tic tac toe! Press any key to continue."
+  gets
+  user = 0
+  computer = 0
+  loop do
+    system('clear')
+    current_winner = main_game_loop
+    if current_winner == 'User'
+      user += 1
+    elsif current_winner == 'Computer'
+      computer += 1
+    end
+    system('clear')
+    break if [user, computer].include?(5)
+    puts "Computer has #{computer} points, and #{name} has #{user} points."
+    puts "Press any key to continue"
+    gets
+  end
+  # rubocop:disable Metrics/LineLength
+  puts "The final score was computer with #{computer} points and #{name} with #{user} points!"
+  if user == 5
+    puts "Congratulation! You won!"
+  else
+    puts "Better luck next time!"
+  end
   repeat = play_again?
   break if repeat == false
 end
