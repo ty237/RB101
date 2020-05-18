@@ -1,3 +1,4 @@
+# rubocop:disable Metrics/LineLength
 require 'pry'
 puts "----------Welcome to Tik Tak Toe!----------"
 POSSIBLE_INPUTS = [1, 2, 3, 4, 5, 6, 7, 8, 9]
@@ -6,7 +7,7 @@ WINNING_LINES = [[1, 2, 3], [4, 5, 6], [7, 8, 9]] +
                 [[1, 4, 7], [2, 5, 8], [3, 6, 9]] +
                 [[1, 5, 9], [3, 5, 7]]
 
-def x_or_o
+def player_chooses_marker
   type = nil
   loop do
     puts "Type O if you would like to play with O's. Otherwise type X."
@@ -56,10 +57,6 @@ def find_computer_marker
   end
 end
 
-system('clear')
-USER_MARKER = x_or_o
-COMPUTER_MARKER = find_computer_marker
-
 def offensive_move(board)
   WINNING_LINES.each do |line|
     if board.values_at(*line).count(COMPUTER_MARKER) == 2
@@ -81,9 +78,7 @@ def defensive_move(board)
 end
 
 def computer_places_piece!(board)
-  square = offensive_move(board)
-  square = defensive_move(board) if square.nil?
-  square = empty_squares(board).sample if square.nil?
+  square = offensive_move(board) || (defensive_move(board)) || (empty_squares(board).sample)
   board[square] = COMPUTER_MARKER
 end
 
@@ -163,6 +158,11 @@ def detect_winner(board)
   nil
 end
 
+def display_welcome_message
+  puts "Let's play five games of tic tac toe! Press any key to continue."
+  gets
+end
+
 def place_piece!(board, current_player)
   if current_player == 'Computer'
     computer_places_piece!(board)
@@ -204,38 +204,53 @@ def play_again?
   end
 end
 
-# beginning of program
-system('clear')
-puts "What is you name?"
-name = gets.chomp
-
-loop do
-  system('clear')
-  puts "Let's play five games of tic tac toe! Press any key to continue."
-  gets
-  user = 0
-  computer = 0
-  loop do
-    system('clear')
-    current_winner = main_game_loop
-    if current_winner == 'User'
-      user += 1
-    elsif current_winner == 'Computer'
-      computer += 1
-    end
-    system('clear')
-    break if [user, computer].include?(5)
-    puts "Computer has #{computer} points, and #{name} has #{user} points."
-    puts "Press any key to continue"
-    gets
-  end
-  # rubocop:disable Metrics/LineLength
+def final_message(computer, name, user)
   puts "The final score was computer with #{computer} points and #{name} with #{user} points!"
   if user == 5
     puts "Congratulation! You won!"
   else
     puts "Better luck next time!"
   end
+end
+
+def display_stats(computer, name, user)
+  puts "Computer has #{computer} points, and #{name} has #{user} points."
+  puts "Press any key to continue"
+  gets
+end
+
+# beginning of program
+system('clear')
+USER_MARKER = player_chooses_marker
+COMPUTER_MARKER = find_computer_marker
+system('clear')
+puts "What is you name?"
+name = gets.chomp
+
+def update_score(array, current_winner)
+  user, computer = array
+  if current_winner == 'User'
+    user += 1
+  elsif current_winner == 'Computer'
+    computer += 1
+  end
+  [user, computer]
+end
+
+loop do
+  system('clear')
+  display_welcome_message
+  user = 0
+  computer = 0
+  loop do
+    system('clear')
+    current_winner = main_game_loop
+    user, computer = update_score([user, computer], current_winner)
+    system('clear')
+    break if [user, computer].include?(5)
+    display_stats(computer, name, user)
+  end
+  final_message(computer, name, user)
   repeat = play_again?
   break if repeat == false
 end
