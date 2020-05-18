@@ -159,7 +159,7 @@ def dealer_turn(dealer_hand)
     break if value >= COMPUTER_TOP_VALUE
     puts "The dealer chose to hit!"
   end
-  puts "The dealer chose to stay at #{total_value(dealer_hand)}!"
+  puts "The dealer chose to stay!"
   dealer_hand
 end
 
